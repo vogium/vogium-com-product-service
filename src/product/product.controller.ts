@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { PaginationQueryDTO } from 'src/firebase/dto/pagination-query.dto';
 import { CreateProductDTO } from './dto/request/create-product.dto';
 import { GetProductByBrandDTO } from './dto/request/get-by-brand.dto';
-import { GetProductByIdDTO } from './dto/request/get-product-by-id.dto';
 import { UpdateBrandDTO } from './dto/request/update-brand.dto';
 import { UpdateCategoryDTO } from './dto/request/update-category.dto';
 import { UpdateHostDTO } from './dto/request/update-host.dto';
@@ -17,13 +16,12 @@ import { UpdateTitleDTO } from './dto/request/update-title.dto';
 import { UpdateUrlDTO } from './dto/request/update-url.dto';
 import { UpdateVogCountDTO } from './dto/request/update-vog-count.dto';
 
-
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
-  
+
   @Get('find/all')
-  async findAllProducts(){
+  async findAllProducts() {
     return await this.productService.getAllProducts();
   }
   @Post('create/product')
@@ -33,17 +31,22 @@ export class ProductController {
 
   @Get('find/productById')
   public async getProductByAuthId(@Query('authId') id: string): Promise<any> {
-    console.log("Auth ID:", id);  // Gelen query parametresini kontrol et
     return await this.productService.getProductByAuthId(id);
   }
 
+  @Get('find/categories')
+  getProductCategories() {
+    return this.productService.getProductCategories();
+  }
   /*@Get('find/productById2')
   public async getProductById(@Body() request: GetProductByIdDTO): Promise<any> {
     return await this.productService.getProductById( request);
   }*/
 
   @Get('find/productByBrand')
-  public async getProductByBrand(@Body() request: GetProductByBrandDTO): Promise<any> {
+  public async getProductByBrand(
+    @Body() request: GetProductByBrandDTO,
+  ): Promise<any> {
     return await this.productService.getProductByBrand(request);
   }
 
@@ -103,7 +106,9 @@ export class ProductController {
   }
 
   @Put('update/vogCount')
-  public async updateVogCount(@Body() request: UpdateVogCountDTO): Promise<any> {
+  public async updateVogCount(
+    @Body() request: UpdateVogCountDTO,
+  ): Promise<any> {
     return await this.productService.updateVogCount(request);
   }
 
@@ -112,4 +117,3 @@ export class ProductController {
     return await this.productService.paginateAccount(query);
   }
 }
-

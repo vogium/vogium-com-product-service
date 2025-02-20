@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { COLLECTION_NAMES } from 'src/constants/firebase.constants';
 import { PaginationQueryDTO } from 'src/firebase/dto/pagination-query.dto';
 import { FirebaseService } from 'src/firebase/firebase.service';
@@ -18,7 +18,7 @@ import { UpdateStockDTO } from './dto/request/update-stock.dto';
 import { UpdateTitleDTO } from './dto/request/update-title.dto';
 import { UpdateUrlDTO } from './dto/request/update-url.dto';
 import { UpdateVogCountDTO } from './dto/request/update-vog-count.dto';
-
+import { ProductCategories } from './enum/product-categories.enum';
 
 @Injectable()
 export class ProductService {
@@ -30,7 +30,20 @@ export class ProductService {
   }
   // Create a new account
   public async createProduct(request: CreateProductDTO): Promise<any> {
-    const {category, index, information, brand, host, images, price, stock, title, offset, url, vogCount }= request
+    const {
+      category,
+      index,
+      information,
+      brand,
+      host,
+      images,
+      price,
+      stock,
+      title,
+      offset,
+      url,
+      vogCount,
+    } = request;
     const productData = new CreateProductFirebaseRequestDTO(
       category,
       index,
@@ -53,17 +66,21 @@ export class ProductService {
   }
 
   public async getProductByAuthId(id: string): Promise<any> {
-    return (await this.firebaseService.getFromFirestore(
-      COLLECTION_NAMES.PRODUCT_COLLECTION,
-      [{ field: 'id', operator: '==', value: id }],
-    )).response;
+    return (
+      await this.firebaseService.getFromFirestore(
+        COLLECTION_NAMES.PRODUCT_COLLECTION,
+        [{ field: 'id', operator: '==', value: id }],
+      )
+    ).response;
   }
   // Get account by ID
   public async getProductById(request: GetProductByIdDTO): Promise<any> {
-    return (await this.firebaseService.getFromFirestore(
-      COLLECTION_NAMES.PRODUCT_COLLECTION,
-      [{ field: 'id', operator: '==', value: request.id }],
-    )).response;
+    return (
+      await this.firebaseService.getFromFirestore(
+        COLLECTION_NAMES.PRODUCT_COLLECTION,
+        [{ field: 'id', operator: '==', value: request.id }],
+      )
+    ).response;
   }
 
   public async getProductByBrand(request: GetProductByBrandDTO): Promise<any> {
@@ -76,8 +93,9 @@ export class ProductService {
   async updateCategory(request: UpdateCategoryDTO) {
     const { id, category } = request;
 
-    const { firebaseResponse, response } =
-      await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.category = category;
 
@@ -87,8 +105,9 @@ export class ProductService {
   async updateIndex(request: UpdateIndexDTO) {
     const { id, index } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.index = index;
 
@@ -98,8 +117,9 @@ export class ProductService {
   async updateInformation(request: UpdateInformationDTO) {
     const { id, information } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.information = information;
 
@@ -109,8 +129,9 @@ export class ProductService {
   async updateBrand(request: UpdateBrandDTO) {
     const { id, brand } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.brand = brand;
 
@@ -120,8 +141,9 @@ export class ProductService {
   public async updateHost(request: UpdateHostDTO): Promise<any> {
     const { id, host } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.host = host;
 
@@ -132,8 +154,9 @@ export class ProductService {
   public async updateImages(request: UpdateImagesDTO): Promise<any> {
     const { id, images } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.images = images;
 
@@ -144,8 +167,9 @@ export class ProductService {
   public async updatePrice(request: UpdatePriceDTO): Promise<any> {
     const { id, price } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.price = price;
 
@@ -156,8 +180,9 @@ export class ProductService {
   public async updateStock(request: UpdateStockDTO): Promise<any> {
     const { id, stock } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.stock = stock;
 
@@ -168,8 +193,9 @@ export class ProductService {
   public async updateTitle(request: UpdateTitleDTO): Promise<any> {
     const { id, title } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.title = title;
 
@@ -180,8 +206,9 @@ export class ProductService {
   public async updateOffset(request: UpdateOffsetDTO): Promise<any> {
     const { id, offset } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.offset = offset;
 
@@ -192,8 +219,9 @@ export class ProductService {
   public async updateUrl(request: UpdateUrlDTO): Promise<any> {
     const { id, url } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.url = url;
 
@@ -204,15 +232,28 @@ export class ProductService {
   public async updateVogCount(request: UpdateVogCountDTO): Promise<any> {
     const { id, vogCount } = request;
 
-    const { firebaseResponse, response } =
-     await this.getProductById(new GetProductByIdDTO(id));
+    const { firebaseResponse, response } = await this.getProductById(
+      new GetProductByIdDTO(id),
+    );
 
     response.vogCount = vogCount;
 
     return await firebaseResponse.ref.update(response);
   }
 
-  public async paginateAccount(query: PaginationQueryDTO){
-    return await this.firebaseService.paginate(COLLECTION_NAMES.PRODUCT_COLLECTION, query);
+  public async paginateAccount(query: PaginationQueryDTO) {
+    return await this.firebaseService.paginate(
+      COLLECTION_NAMES.PRODUCT_COLLECTION,
+      query,
+    );
+  }
+
+  public getProductCategories(): { key: string; value: number }[] {
+    return Object.keys(ProductCategories)
+      .filter((key) => isNaN(Number(key))) // Enum’un string keylerini al
+      .map((key) => ({
+        key,
+        value: ProductCategories[key as keyof typeof ProductCategories],
+      }));
   }
 }
